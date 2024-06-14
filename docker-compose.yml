@@ -1,0 +1,44 @@
+services:
+  localstack:
+    container_name: "localstack_main"
+    image: localstack/localstack
+    ports:
+      - "127.0.0.1:4566:4566"
+      - "127.0.0.1:4510-4559:4510-4559"
+    environment:
+      - DEBUG=1
+      - LAMBDA_EXECUTOR=local
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "./volume:/var/lib/localstack"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+      POSTGRES_DB: "${DB_NAME}"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+      - db-data:/var/lib/postgresql/data
+
+  mq:
+    image: rabbitmq:3-management-alpine
+
+    ports:
+      - 5672:5672
+      - 15672:15672
+
+    environment:
+      RABBITMQ_DEFAULT_USER: "${RMQ_USERNAME}"
+      RABBITMQ_DEFAULT_PASS: "${RMQ_PASSWORD}"
+
+    volumes:
+      - rabbitmq-data:/var/lib/rabbitmq
+
+volumes:
+  db-data:
+  rabbitmq-data:
