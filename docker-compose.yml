@@ -7,8 +7,11 @@ services:
       - "127.0.0.1:4510-4559:4510-4559"
     environment:
       - DEBUG=1
-      - LAMBDA_EXECUTOR=local
+      - LAMBDA_EXECUTOR=docker-reuse
       - DOCKER_HOST=unix:///var/run/docker.sock
+      - LAMBDA_LIMITS_CODE_SIZE_ZIPPED=524288000
+      - LAMBDA_LIMITS_CREATE_FUNCTION_REQUEST_SIZE=701672110
+
     volumes:
       - "./volume:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
@@ -38,6 +41,7 @@ services:
 
     volumes:
       - rabbitmq-data:/var/lib/rabbitmq
+
 
 volumes:
   db-data:

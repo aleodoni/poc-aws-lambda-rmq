@@ -1,9 +1,12 @@
-from sqlalchemy import create_engine, Engine
+from sqlalchemy import create_engine
+import os
 
 from infra.conn.iconnect import IConnect
 
 class SqlAlchemyConnect(IConnect):
     def getEngine(self):
-        engine=create_engine("postgresql://postgres:123456@localhost/spl",echo=True)
+        host = os.environ["HOST"]
+
+        engine=create_engine("postgresql://postgres:123456@" + host + "/spl",echo=True)
 
         return engine

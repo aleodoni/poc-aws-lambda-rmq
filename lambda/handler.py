@@ -1,3 +1,5 @@
+import os
+
 from main.main import Main
 from infra.conn.iconnect import IConnect
 from infra.conn.alchemy.connect import SqlAlchemyConnect
@@ -11,13 +13,19 @@ from services.fake.fake_queue_service import FakeQueueService
 from services.fake.fake_data_service import FakeDataService
 
 def handler(event, context):
+    os.environ["HOST"] = "172.17.0.1"
+
     conn: IConnect
     data_service: IDataService
     queue_service: IQueueService
 
     conn = SqlAlchemyConnect()
     data_service = DataService()
-    queue_service = FakeQueueService()
+    queue_service = QueueService()
+
+    # conn = FakeConnect()
+    # data_service = FakeDataService()
+    # queue_service = FakeQueueService()
 
     mainFlow = Main(conn, data_service, queue_service)
 
@@ -29,17 +37,19 @@ def handler(event, context):
 
 
 if __name__ == "__main__":
+    os.environ["HOST"] = "localhost"
+
     conn: IConnect
     data_service: IDataService
     queue_service: IQueueService
     
-    # conn = SqlAlchemyConnect()
-    # data_service = DataService()
-
-    conn = FakeConnect()
-    data_service = FakeDataService()
-    # queue_service = FakeQueueService()
+    conn = SqlAlchemyConnect()
+    data_service = DataService()
     queue_service = QueueService()
+
+    # conn = FakeConnect()
+    # data_service = FakeDataService()
+    # queue_service = FakeQueueService()
 
     mainFlow = Main(conn, data_service, queue_service)
 

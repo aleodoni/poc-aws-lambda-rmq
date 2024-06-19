@@ -1,3 +1,8 @@
 volume
 .venv
 *.pyc
+.terraform
+spl_voting.zip
+terraform/libcode
+terraform/outputs
+terraform/layer
