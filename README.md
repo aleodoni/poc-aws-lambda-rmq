@@ -7,6 +7,8 @@ It creates a scheduled lambda funcion that runs every 5 minutes doing:
 - Transform data 
 - Send data to RabbitMq in JSON format
 
+![image](assets/images/lambda.png)
+
 # What you need to have installed
 - Docker
 - OpenTofu or Terraform
@@ -14,6 +16,9 @@ It creates a scheduled lambda funcion that runs every 5 minutes doing:
 - Poetry
 
 # How to use it
+
+## Running on LocalStack
+
 Please follow the sequence below:
 
 1. Start containers running:
@@ -34,5 +39,17 @@ tofu plan
 
 4. Apply it:
 ```
-tofu plan
+tofu apply
+```
+
+## Running locally without Localstack (testing the funcion)
+
+1. Activate python environment:
+```
+poetry shell
+```
+
+2. Execute python function:
+```
+python lambda/handler.py
 ```
